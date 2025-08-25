@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Home | Scarpe sportive da uomo e donna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',  filename='styles/home.css') }}" />
+</head>
+<body>
+    <header>
+        {% include 'nav.html' %}
+        <div class="container">
+        <h2>GOOD SHOES <br> TAKE YOU <br> GOOD PLACES</h2>
+        <img src="{{ url_for('static', filename='images/hero_image.png') }}" alt="hero image">
+    </div>
+    </header>
+
+<main id="main">
+    <div class="container2">
+       <div>Filtri</div>
+    <form method="get" action="{{ url_for('index') }}#main">
+        <label for="nome">Nome</label>
+        <input type="text" name="nome" id="nome" placeholder="Inserisci nome" value="{{ nome or '' }}">
+
+        <label for="marca">Brand</label>
+        <select name="marca" id="marca">
+            <option value="">Seleziona brand</option>
+           {% for b in brands %}
+            <option value="{{ b.name }}" {% if b.name == marca %} selected {% endif %}>{{ b.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="taglia">Taglia</label>
+        <select name="taglia" id="taglia">
+            <option value="">Seleziona taglia</option>
+            {% for t in sizes %}
+                <option value="{{ t.number }}" {% if t.number|string == taglia %} selected {% endif %}>{{ t.number }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="prezzo_min">Prezzo minimo</label>
+        <input type="number" name="prezzo_min" id="prezzo_min" value="{{ prezzo_min or '' }}">
+
+        <label for="prezzo_max">Prezzo massimo</label>
+        <input type="number" name="prezzo_max" id="prezzo_max" value="{{ prezzo_max or '' }}">
+
+        <button type="submit">Filtra</button>
+        <a href="{{ url_for('index') }}#main">
+            <button type="button">Reset</button>
+        </a>
+    </form>
+    </div>
+    <div class="container1">
+        {% for item in shoes | sort(attribute='price') %}
+         <div class="card">
+             <img src="{{ url_for('static', filename='images/' ~ item.image) }}"
+                  alt="item.image">
+             <h3>{{item.name}}</h3>
+             <p>{{item.price}}€</p>
+             <p>Numeri disponibili:</p>
+             {% for el in item.stock_rel | sort(attribute='size_rel.number') %}
+             {{el.size_rel.number}}
+             {% endfor %}
+             <p><a href="{{ url_for('shoe_detail', shoe_id=item.id) }}">
+                 <button>Mostra Dettagli</button></a></p>
+         </div>
+        {% endfor %}
+    </div>
+    </ul>
+</main>
+    {% include 'footer.html' %}
+</body>
+</html>

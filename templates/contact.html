@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Contatti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+    <header>
+        {% include 'nav.html' %}
+    </header>
+</head>
+<body>
+    <main>
+    <h1>Restiamo in contatto!</h1>
+        <form action="{{ url_for('contact') }}" method="post">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" required>
+
+           <label for="cognome">Cognome:</label>
+            <input type="text" name="cognome" id="cognome" required>
+
+           <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <button type="submit">Invia</button>
+        </form>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>
